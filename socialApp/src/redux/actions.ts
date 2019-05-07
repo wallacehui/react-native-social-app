@@ -1,1 +1,3 @@
-export interface Action {}
+import { DidFetchUsersAction } from "./actions/user";
+
+export type Action = DidFetchUsersAction;
