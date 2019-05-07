@@ -7,6 +7,10 @@ import { connect } from "react-redux";
 import { selectUsers } from "../redux/reducers/user";
 import { User } from "../models/user";
 import { FlatList } from "react-native-gesture-handler";
+import {
+  NavigationScreenProps,
+  NavigationScreenOptions,
+} from "react-navigation";
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -14,6 +18,11 @@ const styles = StyleSheet.create({
   },
   cellContainer: {
     flexDirection: "column",
+  },
+  title: {
+    fontSize: 22,
+    color: "#333333",
+    textAlign: "center",
   },
   userName: {
     fontSize: 22,
@@ -56,9 +65,15 @@ interface MapProps {
   users: User[];
 }
 
-type Props = MapProps & ReturnType<typeof mapDispatchToProps>;
+type Props = MapProps &
+  ReturnType<typeof mapDispatchToProps> &
+  NavigationScreenProps;
 
 export class UserListScreen extends React.PureComponent<Props> {
+  static navigationOptions: NavigationScreenOptions = {
+    headerTitle: <Text style={styles.title}>Friends</Text>,
+  };
+
   componentDidMount() {
     this.props.userAction.fetchUsers();
   }

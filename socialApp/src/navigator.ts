@@ -1,6 +1,22 @@
-import { createAppContainer, createBottomTabNavigator } from "react-navigation";
+import {
+  createAppContainer,
+  createBottomTabNavigator,
+  createStackNavigator,
+} from "react-navigation";
 import PostListScreen from "./screens/PostListScreen";
 import UserListScreen from "./screens/UserListScreen";
+
+const UserTabStackNavigator = createStackNavigator(
+  {
+    UserListScreen: {
+      screen: UserListScreen,
+    },
+  },
+  {
+    initialRouteName: "UserListScreen",
+    headerLayoutPreset: "center",
+  }
+);
 
 const MainTabNavigator = createBottomTabNavigator(
   {
@@ -8,7 +24,7 @@ const MainTabNavigator = createBottomTabNavigator(
       screen: PostListScreen,
     },
     UserListTab: {
-      screen: UserListScreen,
+      screen: UserTabStackNavigator,
     },
   },
   {
