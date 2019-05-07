@@ -15,7 +15,8 @@
     "react-native-gesture-handler": "1.2.1",
     "react-navigation": "3.9.1",
     "react-redux": "7.0.3",
-    "redux-thunk": "2.3.0"
+    "redux-thunk": "2.3.0",
+    "yup": "0.27.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
@@ -23,6 +24,7 @@
     "@types/react": "^16.8.16",
     "@types/react-native": "^0.57.51",
     "@types/react-redux": "7.0.8",
+    "@types/yup": "0.26.13",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "^0.54.0",
