@@ -1,4 +1,5 @@
 import * as React from "react";
+import { TouchableOpacity, FlatList } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
 import { Dispatch, ReduxState } from "../redux/store";
 import { bindActionCreators } from "redux";
@@ -6,7 +7,6 @@ import { fetchUsers } from "../redux/actions/user";
 import { connect } from "react-redux";
 import { selectUsers } from "../redux/reducers/user";
 import { User } from "../models/user";
-import { FlatList } from "react-native-gesture-handler";
 import {
   NavigationScreenProps,
   NavigationScreenOptions,
@@ -39,11 +39,13 @@ const styles = StyleSheet.create({
   },
 });
 
-function UserViewCell(props: { user: User }) {
-  const { user } = props;
+function UserViewCell(props: { onPress: () => void; user: User }) {
+  const { user, onPress } = props;
   return (
     <View style={styles.cellContainer}>
-      <Text style={styles.userName}>{user.name}</Text>
+      <TouchableOpacity onPress={onPress}>
+        <Text style={styles.userName}>{user.name}</Text>
+      </TouchableOpacity>
       <View style={styles.separator} />
     </View>
   );
@@ -78,12 +80,18 @@ export class UserListScreen extends React.PureComponent<Props> {
     this.props.userAction.fetchUsers();
   }
 
+  onPressUser = (user: User) => {
+    // TODO: navigate to user detail screen
+    console.log("press", user);
+  };
+
   keyExtractor = (item: User) => {
     return item.id.toString();
   };
 
   renderItem = ({ item }: { item: User }) => {
-    return <UserViewCell user={item} />;
+    // tslint:disable-next-line:jsx-no-lambda
+    return <UserViewCell onPress={() => this.onPressUser(item)} user={item} />;
   };
 
   render() {
