@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   title: {
-    fontSize: 22,
+    fontSize: 18,
     color: "#333333",
     textAlign: "center",
   },
   userName: {
-    fontSize: 22,
+    fontSize: 18,
     color: "#333333",
     flex: 1,
     paddingVertical: 15,
