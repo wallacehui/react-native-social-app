@@ -11,6 +11,7 @@ import {
   NavigationScreenProps,
   NavigationScreenOptions,
 } from "react-navigation";
+import { makeUserDetailScreenRoute } from "../routeMaker";
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -81,8 +82,11 @@ export class UserListScreen extends React.PureComponent<Props> {
   }
 
   onPressUser = (user: User) => {
-    // TODO: navigate to user detail screen
-    console.log("press", user);
+    const [routeName, routeProps] = makeUserDetailScreenRoute({ user: user });
+    this.props.navigation.navigate({
+      routeName,
+      params: routeProps,
+    });
   };
 
   keyExtractor = (item: User) => {

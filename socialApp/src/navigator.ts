@@ -5,11 +5,15 @@ import {
 } from "react-navigation";
 import PostListScreen from "./screens/PostListScreen";
 import UserListScreen from "./screens/UserListScreen";
+import UserDetailScreen from "./screens/UserDetailScreen";
 
 const UserTabStackNavigator = createStackNavigator(
   {
     UserListScreen: {
       screen: UserListScreen,
+    },
+    UserDetailScreen: {
+      screen: UserDetailScreen,
     },
   },
   {
