@@ -1,11 +1,17 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { User } from "../models/user";
 import {
   NavigationScreenProps,
   NavigationScreenOptions,
 } from "react-navigation";
-import { ScrollView } from "react-native-gesture-handler";
 import { Company } from "../models/company";
 
 const styles = StyleSheet.create({
@@ -69,6 +75,31 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginVertical: 10,
   },
+  companyDetailContainer: {
+    flexDirection: "column",
+    marginVertical: 15,
+    paddingHorizontal: 15,
+  },
+  separator: {
+    backgroundColor: "#E0E0E0",
+    height: 1,
+    flex: 1,
+  },
+  navigationContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  navigationLabel: {
+    fontSize: 18,
+    color: "#333333",
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  rightArrow: {
+    width: 30,
+    height: 30,
+  },
 });
 
 export interface RouteProps {
@@ -92,6 +123,24 @@ function CompanyInfoRow(props: { label: string; value: string }) {
       <Text style={styles.companyInfoRowLabel}>{props.label}</Text>
       <Text style={styles.companyInfoRowValue}>{props.value}</Text>
     </View>
+  );
+}
+
+function NaivgationView(props: { label: string; onPress: () => void }) {
+  return (
+    <>
+      <TouchableOpacity
+        style={styles.navigationContainer}
+        onPress={props.onPress}
+      >
+        <Text style={styles.navigationLabel}>{props.label}</Text>
+        <Image
+          style={styles.rightArrow}
+          source={require("../resources/images/navigation_right_arrow.png")}
+        />
+      </TouchableOpacity>
+      <View style={styles.separator} />
+    </>
   );
 }
 
@@ -121,7 +170,7 @@ export default class UserDetailScreen extends React.PureComponent<Props> {
 
   renderCompanyInfo(company: Company) {
     return (
-      <View style={styles.detailContainer}>
+      <View style={styles.companyDetailContainer}>
         <CompanyInfoRow label="Work At:" value={company.name} />
         <CompanyInfoRow label="Catch Phrase:" value={company.catchPhrase} />
         <CompanyInfoRow label="Business:" value={company.bs} />
@@ -129,12 +178,27 @@ export default class UserDetailScreen extends React.PureComponent<Props> {
     );
   }
 
+  onPressPhotoAlbum = () => {
+    // TODO: Navigate to photo album
+  };
+
+  onPressTodos = () => {
+    // TODO: Navigate to todo list
+  };
+
+  onPressPosts = () => {
+    // TODO: Navigate to post list
+  };
+
   render() {
     const user = this.props.navigation.getParam("user");
     return (
       <ScrollView style={styles.rootContainer}>
         {this.renderUserInfo(user)}
         {this.renderCompanyInfo(user.company)}
+        <NaivgationView label="Photo Albums" onPress={this.onPressPhotoAlbum} />
+        <NaivgationView label="Todos" onPress={this.onPressTodos} />
+        <NaivgationView label="Posts" onPress={this.onPressPosts} />
       </ScrollView>
     );
   }
