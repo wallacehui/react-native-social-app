@@ -3,10 +3,12 @@ import { userListResponseSchema } from "./models/api/user";
 import { Todo } from "./models/todo";
 import { todoListResponseSchema } from "./models/api/todo";
 import { appendQueryString } from "./utils/urlUtil";
+import { Album } from "./models/album";
+import { albumListResponseSchema } from "./models/api/album";
 
 const endpoint = "https://jsonplaceholder.typicode.com";
 
-export type ApiClient = UserApiClient & TodoApiClient;
+export type ApiClient = UserApiClient & TodoApiClient & AlbumApiClient;
 
 interface UserApiClient {
   queryUsers(): Promise<User[]>;
@@ -14,6 +16,10 @@ interface UserApiClient {
 
 interface TodoApiClient {
   queryTodosByUser(userId: number): Promise<Todo[]>;
+}
+
+interface AlbumApiClient {
+  queryAlbumsByUser(userId: number): Promise<Album[]>;
 }
 
 class ApiClientImpl implements ApiClient {
@@ -35,6 +41,19 @@ class ApiClientImpl implements ApiClient {
       const response = await fetch(url);
       const body = await response.json();
       return todoListResponseSchema.validateSync(body);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async queryAlbumsByUser(userId: number): Promise<Album[]> {
+    try {
+      const url = appendQueryString(endpoint + "/albums", {
+        userId: userId.toString(),
+      });
+      const response = await fetch(url);
+      const body = await response.json();
+      return albumListResponseSchema.validateSync(body);
     } catch (e) {
       throw e;
     }

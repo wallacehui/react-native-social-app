@@ -1,6 +1,5 @@
-export interface Todo {
+export interface Album {
   id: number;
   userId: number;
   title: string;
-  completed: boolean;
 }
