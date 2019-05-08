@@ -1,4 +1,7 @@
 import { DidFetchUsersAction } from "./actions/user";
-import { DidFetchTodosAction } from "./actions/todo";
+import { DidFetchTodosAction, WillFetchTodosAction } from "./actions/todo";
 
-export type Action = DidFetchUsersAction | DidFetchTodosAction;
+export type Action =
+  | DidFetchUsersAction
+  | DidFetchTodosAction
+  | WillFetchTodosAction;
