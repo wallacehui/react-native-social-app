@@ -13,7 +13,10 @@ import {
   NavigationScreenOptions,
 } from "react-navigation";
 import { Company } from "../models/company";
-import { makeTodoListScreenRoute } from "../routeMaker";
+import {
+  makeTodoListScreenRoute,
+  makeAlbumListScreenRoute,
+} from "../routeMaker";
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -194,7 +197,13 @@ export default class UserDetailScreen extends React.PureComponent<
   }
 
   onPressPhotoAlbum = () => {
-    // TODO: Navigate to photo album
+    const [routeName, routeProps] = makeAlbumListScreenRoute({
+      user: this.state.user,
+    });
+    this.props.navigation.navigate({
+      routeName,
+      params: routeProps,
+    });
   };
 
   onPressTodos = () => {
