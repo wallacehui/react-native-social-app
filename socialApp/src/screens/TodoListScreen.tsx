@@ -1,8 +1,9 @@
 import * as React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import {
   NavigationScreenProps,
   NavigationScreenOptions,
+  FlatList,
 } from "react-navigation";
 import { User } from "../models/user";
 import { ReduxState, Dispatch } from "../redux/store";
@@ -11,6 +12,7 @@ import { fetchTodosByUser } from "../redux/actions/todo";
 import { selectTodos } from "../redux/reducers/todo";
 import { connect } from "react-redux";
 import { Todo } from "../models/todo";
+import { todoListResponseSchema } from "../models/api/todo";
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -20,6 +22,29 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#333333",
     textAlign: "center",
+  },
+  cellContainer: {
+    flexDirection: "row",
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 15,
+  },
+  todoTitle: {
+    fontSize: 16,
+    color: "#333333",
+    flex: 1,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+  },
+  separator: {
+    backgroundColor: "#E0E0E0",
+    marginLeft: 15,
+    height: 1,
+    flex: 1,
+  },
+  checkIcon: {
+    width: 30,
+    height: 30,
   },
 });
 
@@ -51,6 +76,21 @@ function mapDispatchToProps(dispatch: Dispatch) {
   };
 }
 
+function TodoViewCell(props: { todo: Todo }) {
+  const source = props.todo.completed
+    ? require("../resources/images/todo_check.png")
+    : require("../resources/images/todo_uncheck.png");
+  return (
+    <>
+      <View style={styles.cellContainer}>
+        <Text style={styles.todoTitle}>{props.todo.title}</Text>
+        <Image style={styles.checkIcon} source={source} />
+      </View>
+      <View style={styles.separator} />
+    </>
+  );
+}
+
 class TodoListScreen extends React.PureComponent<Props, State> {
   static navigationOptions: NavigationScreenOptions = {
     headerTitle: <Text style={styles.title}>Todos</Text>,
@@ -67,8 +107,25 @@ class TodoListScreen extends React.PureComponent<Props, State> {
     this.props.todoAction.fetchTodosByUser(this.state.user);
   }
 
+  keyExtractor = (item: Todo) => {
+    return item.id.toString();
+  };
+
+  renderItem = ({ item }: { item: Todo }) => {
+    return <TodoViewCell todo={item} />;
+  };
+
   render() {
-    return <View style={styles.rootContainer} />;
+    const { todos } = this.props;
+    return (
+      <View style={styles.rootContainer}>
+        <FlatList
+          data={todos}
+          renderItem={this.renderItem}
+          keyExtractor={this.keyExtractor}
+        />
+      </View>
+    );
   }
 }
 
