@@ -1,6 +1,7 @@
 import { Todo } from "../../models/todo";
 import { Action } from "../actions";
 import produce from "immer";
+import { ReduxState } from "../store";
 
 export interface State {
   todoMap: { [id: number]: Todo };
@@ -28,4 +29,15 @@ export default function reducer(
       }
     }
   });
+}
+
+export function selectTodos(state: ReduxState): Todo[] {
+  const todos: Todo[] = [];
+  for (const id of state.todo.todoIds) {
+    const todo = state.todo.todoMap[id];
+    if (todo) {
+      todos.push(todo);
+    }
+  }
+  return todos;
 }
