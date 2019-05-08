@@ -13,6 +13,7 @@ import {
   NavigationScreenOptions,
 } from "react-navigation";
 import { Company } from "../models/company";
+import { makeTodoListScreenRoute } from "../routeMaker";
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -108,6 +109,10 @@ export interface RouteProps {
 
 type Props = NavigationScreenProps<RouteProps>;
 
+interface State {
+  user: User;
+}
+
 function InfoRow(props: { label: string; value: string }) {
   return (
     <View style={styles.infoRow}>
@@ -144,7 +149,10 @@ function NaivgationView(props: { label: string; onPress: () => void }) {
   );
 }
 
-export default class UserDetailScreen extends React.PureComponent<Props> {
+export default class UserDetailScreen extends React.PureComponent<
+  Props,
+  State
+> {
   static navigationOptions = ({
     navigation,
   }: NavigationScreenProps<RouteProps>): NavigationScreenOptions => ({
@@ -152,6 +160,13 @@ export default class UserDetailScreen extends React.PureComponent<Props> {
       <Text style={styles.title}>{navigation.getParam("user").username}</Text>
     ),
   });
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      user: this.props.navigation.getParam("user"),
+    };
+  }
 
   renderUserInfo(user: User) {
     return (
@@ -183,7 +198,13 @@ export default class UserDetailScreen extends React.PureComponent<Props> {
   };
 
   onPressTodos = () => {
-    // TODO: Navigate to todo list
+    const [routeName, routeProps] = makeTodoListScreenRoute({
+      user: this.state.user,
+    });
+    this.props.navigation.navigate({
+      routeName,
+      params: routeProps,
+    });
   };
 
   onPressPosts = () => {
@@ -191,11 +212,10 @@ export default class UserDetailScreen extends React.PureComponent<Props> {
   };
 
   render() {
-    const user = this.props.navigation.getParam("user");
     return (
       <ScrollView style={styles.rootContainer}>
-        {this.renderUserInfo(user)}
-        {this.renderCompanyInfo(user.company)}
+        {this.renderUserInfo(this.state.user)}
+        {this.renderCompanyInfo(this.state.user.company)}
         <NaivgationView label="Photo Albums" onPress={this.onPressPhotoAlbum} />
         <NaivgationView label="Todos" onPress={this.onPressTodos} />
         <NaivgationView label="Posts" onPress={this.onPressPosts} />

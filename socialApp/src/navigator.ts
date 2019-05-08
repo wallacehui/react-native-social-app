@@ -6,6 +6,7 @@ import {
 import PostListScreen from "./screens/PostListScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserDetailScreen from "./screens/UserDetailScreen";
+import TodoListScreen from "./screens/TodoListScreen";
 
 const UserTabStackNavigator = createStackNavigator(
   {
@@ -14,6 +15,9 @@ const UserTabStackNavigator = createStackNavigator(
     },
     UserDetailScreen: {
       screen: UserDetailScreen,
+    },
+    TodoListScreen: {
+      screen: TodoListScreen,
     },
   },
   {
