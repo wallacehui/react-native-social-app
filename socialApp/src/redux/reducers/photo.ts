@@ -56,3 +56,14 @@ export default function reducer(
 export function selectPhotosFetchState(state: ReduxState): FetchState {
   return state.photo.photosPagination.fetchState;
 }
+
+export function selectPhotos(state: ReduxState): Photo[] {
+  const photos: Photo[] = [];
+  for (const id of state.photo.photosPagination.ids) {
+    const photo = state.photo.photosPagination.itemMap[id];
+    if (photo) {
+      photos.push(photo);
+    }
+  }
+  return photos;
+}
