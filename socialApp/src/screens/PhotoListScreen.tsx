@@ -5,7 +5,7 @@ import {
   NavigationScreenOptions,
   FlatList,
 } from "react-navigation";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, RefreshControl } from "react-native";
 import { ReduxState, Dispatch } from "../redux/store";
 import { bindActionCreators } from "redux";
 import {
@@ -128,14 +128,32 @@ class PhotoListScreen extends React.PureComponent<Props, State> {
     return <PhotoViewCell photo={item} />;
   };
 
+  onRefresh = () => {
+    this.props.photoAction.refreshPhotosByAlbum(this.state.album);
+  };
+
+  onEndReached = (info: { distanceFromEnd: number }) => {
+    this.props.photoAction.fetchPhotosByAlbum(this.state.album);
+  };
+
   render() {
     const { fetchStatus, photos } = this.props;
     return (
       <View style={styles.rootContainer}>
         <FlatList
+          style={styles.list}
           data={photos}
           renderItem={this.renderItem}
           keyExtractor={this.keyExtractor}
+          refreshControl={
+            <RefreshControl
+              refreshing={fetchStatus == "WillRefresh"}
+              onRefresh={this.onRefresh}
+            />
+          }
+          refreshing={fetchStatus == "WillRefresh"}
+          onEndReached={this.onEndReached}
+          onEndReachedThreshold={0.2}
         />
       </View>
     );
