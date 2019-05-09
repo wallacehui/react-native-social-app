@@ -5,6 +5,12 @@ import {
   NavigationScreenProps,
   NavigationScreenOptions,
 } from "react-navigation";
+import { ReduxState, Dispatch } from "../redux/store";
+import { bindActionCreators } from "redux";
+import { fetchPostsByUser } from "../redux/actions/post";
+import { connect } from "react-redux";
+import { selectPosts } from "../redux/reducers/post";
+import { Post } from "../models/post";
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -21,16 +27,31 @@ export interface RouteProps {
   user: User;
 }
 
-type Props = NavigationScreenProps<RouteProps>;
+interface MapProps {
+  posts: Post[];
+}
+
+type Props = NavigationScreenProps<RouteProps> &
+  MapProps &
+  ReturnType<typeof mapDispatchToProps>;
 
 interface State {
   user: User;
 }
 
-export default class UserPostListScreen extends React.PureComponent<
-  Props,
-  State
-> {
+function mapStateToProps(state: ReduxState) {
+  return {
+    posts: selectPosts(state),
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    postAction: bindActionCreators({ fetchPostsByUser }, dispatch),
+  };
+}
+
+class UserPostListScreen extends React.PureComponent<Props, State> {
   static navigationOptions: NavigationScreenOptions = {
     headerTitle: <Text style={styles.title}>Posts</Text>,
   };
@@ -42,7 +63,16 @@ export default class UserPostListScreen extends React.PureComponent<
     };
   }
 
+  componentDidMount() {
+    this.props.postAction.fetchPostsByUser(this.state.user);
+  }
+
   render() {
     return <View style={styles.rootContainer} />;
   }
 }
+
+connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserPostListScreen);
