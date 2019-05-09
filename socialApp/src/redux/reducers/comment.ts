@@ -28,7 +28,7 @@ export default function reducer(
         break;
       }
       case "WillFetchCommentsAction": {
-        draft = initialState;
+        draft.commentIds = [];
         break;
       }
     }

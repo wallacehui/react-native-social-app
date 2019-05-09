@@ -28,7 +28,7 @@ export default function reducer(
         break;
       }
       case "willFetchAlbumsAction": {
-        draft = initialState;
+        draft.albumIds = [];
         break;
       }
     }

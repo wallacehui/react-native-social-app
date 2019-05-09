@@ -28,7 +28,7 @@ export default function reducer(
         break;
       }
       case "WillFetchTodosAction": {
-        draft = initialState;
+        draft.todoIds = [];
         break;
       }
     }

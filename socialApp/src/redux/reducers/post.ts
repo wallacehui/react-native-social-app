@@ -28,7 +28,7 @@ export default function reducer(
         break;
       }
       case "WillFetchPostsAction": {
-        draft = initialState;
+        draft.postIds = [];
         break;
       }
     }
