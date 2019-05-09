@@ -39,21 +39,29 @@ function didFetchPhotosAction(
 }
 
 export function refreshPhotosByAlbum(album: Album): ThunkAction<Promise<void>> {
-  return async (dispatch, _, { apiClient }) => {
+  return async (dispatch, getState, { apiClient }) => {
+    const fetchState = selectPhotosFetchState(getState());
     dispatch(willRefreshPhotosAction());
-    const photosLink = await apiClient.queryPhotosByAlbum(album.id, undefined);
-    dispatch(didFetchPhotosAction(photosLink));
+    if (fetchState.status == "Idle") {
+      const photosLink = await apiClient.queryPhotosByAlbum(
+        album.id,
+        undefined
+      );
+      dispatch(didFetchPhotosAction(photosLink));
+    }
   };
 }
 
 export function fetchPhotosByAlbum(album: Album): ThunkAction<Promise<void>> {
   return async (dispatch, getState, { apiClient }) => {
-    dispatch(willFetchPhotosAction());
     const fetchState = selectPhotosFetchState(getState());
-    const photosLink = await apiClient.queryPhotosByAlbum(
-      album.id,
-      fetchState.next
-    );
-    dispatch(didFetchPhotosAction(photosLink));
+    if (fetchState.status == "Idle" && fetchState.hasNext) {
+      dispatch(willFetchPhotosAction());
+      const photosLink = await apiClient.queryPhotosByAlbum(
+        album.id,
+        fetchState.next
+      );
+      dispatch(didFetchPhotosAction(photosLink));
+    }
   };
 }

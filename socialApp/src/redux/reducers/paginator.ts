@@ -9,6 +9,7 @@ export interface PaginationState<T> {
 export interface FetchState {
   status: PaingationStatus;
   next: string | undefined;
+  hasNext: boolean;
 }
 
 export interface ItemsLink<T> {
@@ -23,6 +24,7 @@ export function makeInitialPaginationState<T>(): PaginationState<T> {
     fetchState: {
       status: "Idle",
       next: undefined,
+      hasNext: false,
     },
   };
 }
@@ -31,6 +33,7 @@ export function makeDidFetchState(next: string | undefined): FetchState {
   return {
     status: "Idle",
     next: next,
+    hasNext: next != null,
   };
 }
 
@@ -38,6 +41,7 @@ export function makeWillFetchState(next: string | undefined): FetchState {
   return {
     status: "WillFetch",
     next: next,
+    hasNext: next != null,
   };
 }
 
@@ -47,5 +51,6 @@ export function makeWillRefreshFetchState(
   return {
     status: "WillRefresh",
     next: next,
+    hasNext: next != null,
   };
 }

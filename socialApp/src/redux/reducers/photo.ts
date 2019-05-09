@@ -48,6 +48,7 @@ export default function reducer(
         draft.photosPagination.fetchState = makeWillRefreshFetchState(
           undefined
         );
+        break;
       }
     }
   });
