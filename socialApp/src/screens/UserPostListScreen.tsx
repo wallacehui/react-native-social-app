@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { selectPosts } from "../redux/reducers/post";
 import { Post } from "../models/post";
 import { FlatList } from "react-native-gesture-handler";
+import { makeCommentListScreenRoute } from "../routeMaker";
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -129,7 +130,13 @@ class UserPostListScreen extends React.PureComponent<Props, State> {
   };
 
   onPressPost = (post: Post) => {
-    // TODO: Navigate to comment list page
+    const [routeName, routeProps] = makeCommentListScreenRoute({
+      post: post,
+    });
+    this.props.navigation.navigate({
+      routeName,
+      params: routeProps,
+    });
   };
 
   renderItem = ({ item }: { item: Post }) => {

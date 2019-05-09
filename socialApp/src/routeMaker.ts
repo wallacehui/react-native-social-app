@@ -3,6 +3,7 @@ import { RouteProps as TodoListScreenProps } from "./screens/TodoListScreen";
 import { RouteProps as AlbumListScreenProps } from "./screens/AlbumListScreen";
 import { RouteProps as PhotoListScreenProps } from "./screens/PhotoListScreen";
 import { RouteProps as UserPostListScreenProps } from "./screens/UserPostListScreen";
+import { RouteProps as CommentListScreenProps } from "./screens/CommentListScreen";
 
 export function makeUserDetailScreenRoute(
   props: UserDetailScreenProps
@@ -32,4 +33,10 @@ export function makeUserPostListScreenRoute(
   props: UserPostListScreenProps
 ): ["UserPostListScreen", UserPostListScreenProps] {
   return ["UserPostListScreen", props];
+}
+
+export function makeCommentListScreenRoute(
+  props: CommentListScreenProps
+): ["CommentListScreen", CommentListScreenProps] {
+  return ["CommentListScreen", props];
 }
