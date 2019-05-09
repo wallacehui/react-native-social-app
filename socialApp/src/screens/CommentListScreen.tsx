@@ -5,6 +5,12 @@ import {
   NavigationScreenProps,
   NavigationScreenOptions,
 } from "react-navigation";
+import { ReduxState, Dispatch } from "../redux/store";
+import { selectComments } from "../redux/reducers/comment";
+import { bindActionCreators } from "redux";
+import { fetchCommentsByPost } from "../redux/actions/comment";
+import { Comment } from "../models/comment";
+import { connect } from "react-redux";
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -21,16 +27,31 @@ export interface RouteProps {
   post: Post;
 }
 
-type Props = NavigationScreenProps<RouteProps>;
+interface MapProps {
+  comments: Comment[];
+}
+
+type Props = NavigationScreenProps<RouteProps> &
+  MapProps &
+  ReturnType<typeof mapDispatchToProps>;
 
 interface State {
   post: Post;
 }
 
-export default class CommentListScreen extends React.PureComponent<
-  Props,
-  State
-> {
+function mapStateToProps(state: ReduxState) {
+  return {
+    comments: selectComments(state),
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    commentAction: bindActionCreators({ fetchCommentsByPost }, dispatch),
+  };
+}
+
+class CommentListScreen extends React.PureComponent<Props, State> {
   static navigationOptions: NavigationScreenOptions = {
     headerTitle: <Text style={styles.title}>Comments</Text>,
   };
@@ -42,7 +63,16 @@ export default class CommentListScreen extends React.PureComponent<
     };
   }
 
+  componentDidMount() {
+    this.props.commentAction.fetchCommentsByPost(this.state.post);
+  }
+
   render() {
     return <View style={styles.rootContainer} />;
   }
 }
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CommentListScreen);

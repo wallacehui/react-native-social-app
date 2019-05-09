@@ -26,7 +26,7 @@ function didFetchCommentsAction(comments: Comment[]): DidFetchCommentsAction {
   };
 }
 
-export function fetchCommentsByUser(post: Post): ThunkAction<Promise<void>> {
+export function fetchCommentsByPost(post: Post): ThunkAction<Promise<void>> {
   return async (dispatch, _, { apiClient }) => {
     dispatch(willFetchCommentsAction());
     const comments = await apiClient.queryCommentByPost(post.id);
