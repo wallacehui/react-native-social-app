@@ -17,15 +17,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   dialogContainer: {
-    width: "80%",
-    height: "60%",
     backgroundColor: "#ffffff",
     borderRadius: 5,
   },
   addressContainer: {
-    flex: 1,
+    minWidth: "80%",
     alignItems: "center",
     justifyContent: "center",
+    padding: 30,
   },
   closeIcon: {
     width: 50,
