@@ -10,6 +10,8 @@ import { Photo } from "./models/photo";
 import { photoListResponseSchema } from "./models/api/photo";
 import { Post } from "./models/post";
 import { postListResponseSchema } from "./models/api/post";
+import { Comment } from "@babel/types";
+import { commentListResponseSchema } from "./models/api/comment";
 
 const endpoint = "https://jsonplaceholder.typicode.com";
 const size = 20;
@@ -18,7 +20,8 @@ export type ApiClient = UserApiClient &
   TodoApiClient &
   AlbumApiClient &
   PhotoApiClient &
-  PostApiClient;
+  PostApiClient &
+  CommentApiClient;
 
 interface UserApiClient {
   queryUsers(): Promise<User[]>;
@@ -41,6 +44,10 @@ interface PhotoApiClient {
 
 interface PostApiClient {
   queryPostsByUser(userId: number): Promise<Post[]>;
+}
+
+interface CommentApiClient {
+  queryCommentByPost(postId: number): Promise<Comment[]>;
 }
 
 class ApiClientImpl implements ApiClient {
@@ -114,6 +121,19 @@ class ApiClientImpl implements ApiClient {
       const response = await fetch(url);
       const body = await response.json();
       return postListResponseSchema.validateSync(body);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async queryCommentByPost(postId: number): Promise<Comment[]> {
+    try {
+      const url = appendQueryString(endpoint + "/comments", {
+        postId: postId.toString(),
+      });
+      const response = await fetch(url);
+      const body = await response.json();
+      return commentListResponseSchema.validateSync(body);
     } catch (e) {
       throw e;
     }
