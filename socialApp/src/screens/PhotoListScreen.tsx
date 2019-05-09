@@ -3,8 +3,9 @@ import { Album } from "../models/album";
 import {
   NavigationScreenProps,
   NavigationScreenOptions,
+  FlatList,
 } from "react-navigation";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import { ReduxState, Dispatch } from "../redux/store";
 import { bindActionCreators } from "redux";
 import {
@@ -24,6 +25,30 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#333333",
     textAlign: "center",
+  },
+  list: {
+    flex: 1,
+  },
+  cellContainer: {
+    flexDirection: "row",
+    flex: 1,
+    alignItems: "center",
+  },
+  photoTitle: {
+    fontSize: 16,
+    color: "#333333",
+    flex: 1,
+    paddingHorizontal: 10,
+  },
+  photoImage: {
+    width: 60,
+    height: 60,
+  },
+  separator: {
+    backgroundColor: "#E0E0E0",
+    marginLeft: 15,
+    height: 1,
+    flex: 1,
   },
 });
 
@@ -60,6 +85,21 @@ interface State {
   album: Album;
 }
 
+function PhotoViewCell(props: { photo: Photo }) {
+  return (
+    <>
+      <View style={styles.cellContainer}>
+        <Image
+          style={styles.photoImage}
+          source={{ uri: props.photo.thumbnailUrl }}
+        />
+        <Text style={styles.photoTitle}>{props.photo.title}</Text>
+      </View>
+      <View style={styles.separator} />
+    </>
+  );
+}
+
 class PhotoListScreen extends React.PureComponent<Props, State> {
   static navigationOptions = ({
     navigation,
@@ -80,8 +120,25 @@ class PhotoListScreen extends React.PureComponent<Props, State> {
     this.props.photoAction.refreshPhotosByAlbum(this.state.album);
   }
 
+  keyExtractor = (item: Photo) => {
+    return item.id.toString();
+  };
+
+  renderItem = ({ item }: { item: Photo }) => {
+    return <PhotoViewCell photo={item} />;
+  };
+
   render() {
-    return <View style={styles.rootContainer} />;
+    const { fetchStatus, photos } = this.props;
+    return (
+      <View style={styles.rootContainer}>
+        <FlatList
+          data={photos}
+          renderItem={this.renderItem}
+          keyExtractor={this.keyExtractor}
+        />
+      </View>
+    );
   }
 }
 
