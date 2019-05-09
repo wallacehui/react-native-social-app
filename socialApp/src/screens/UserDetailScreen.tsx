@@ -18,6 +18,7 @@ import {
   makeAlbumListScreenRoute,
   makeUserPostListScreenRoute,
 } from "../routeMaker";
+import AddressModal from "../components/AddressModal";
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -105,6 +106,17 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+  addressButton: {
+    backgroundColor: "#4974a2",
+    borderRadius: 5,
+    alignSelf: "center",
+  },
+  buttonText: {
+    fontSize: 18,
+    color: "#ffffff",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
 });
 
 export interface RouteProps {
@@ -115,6 +127,7 @@ type Props = NavigationScreenProps<RouteProps>;
 
 interface State {
   user: User;
+  modalVisible: boolean;
 }
 
 function InfoRow(props: { label: string; value: string }) {
@@ -169,6 +182,7 @@ export default class UserDetailScreen extends React.PureComponent<
     super(props);
     this.state = {
       user: this.props.navigation.getParam("user"),
+      modalVisible: false,
     };
   }
 
@@ -227,11 +241,27 @@ export default class UserDetailScreen extends React.PureComponent<
     });
   };
 
+  onClose = () => {
+    this.setState({ modalVisible: false });
+  };
+
+  onShow = () => {
+    this.setState({ modalVisible: true });
+  };
+
   render() {
     return (
       <ScrollView style={styles.rootContainer}>
         {this.renderUserInfo(this.state.user)}
         {this.renderCompanyInfo(this.state.user.company)}
+        <AddressModal
+          address={this.state.user.address}
+          onClose={this.onClose}
+          visible={this.state.modalVisible}
+        />
+        <TouchableOpacity style={styles.addressButton} onPress={this.onShow}>
+          <Text style={styles.buttonText}>Address</Text>
+        </TouchableOpacity>
         <NaivgationView label="Photo Albums" onPress={this.onPressPhotoAlbum} />
         <NaivgationView label="Todos" onPress={this.onPressTodos} />
         <NaivgationView label="Posts" onPress={this.onPressPosts} />
