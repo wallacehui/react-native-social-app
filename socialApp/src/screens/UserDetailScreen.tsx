@@ -16,6 +16,7 @@ import { Company } from "../models/company";
 import {
   makeTodoListScreenRoute,
   makeAlbumListScreenRoute,
+  makeUserPostListScreenRoute,
 } from "../routeMaker";
 
 const styles = StyleSheet.create({
@@ -217,7 +218,13 @@ export default class UserDetailScreen extends React.PureComponent<
   };
 
   onPressPosts = () => {
-    // TODO: Navigate to post list
+    const [routeName, routeProps] = makeUserPostListScreenRoute({
+      user: this.state.user,
+    });
+    this.props.navigation.navigate({
+      routeName,
+      params: routeProps,
+    });
   };
 
   render() {
