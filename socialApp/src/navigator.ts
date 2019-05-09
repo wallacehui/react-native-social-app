@@ -8,6 +8,7 @@ import UserListScreen from "./screens/UserListScreen";
 import UserDetailScreen from "./screens/UserDetailScreen";
 import TodoListScreen from "./screens/TodoListScreen";
 import AlbumListScreen from "./screens/AlbumListScreen";
+import PhotoListScreen from "./screens/PhotoListScreen";
 
 const UserTabStackNavigator = createStackNavigator(
   {
@@ -22,6 +23,9 @@ const UserTabStackNavigator = createStackNavigator(
     },
     AlbumListScreen: {
       screen: AlbumListScreen,
+    },
+    PhotoListScreen: {
+      screen: PhotoListScreen,
     },
   },
   {

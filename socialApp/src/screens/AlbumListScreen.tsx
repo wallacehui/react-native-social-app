@@ -13,6 +13,7 @@ import { fetchalbumsByUser } from "../redux/actions/album";
 import { connect } from "react-redux";
 import { Album } from "../models/album";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { makePhotoListScreenRoute } from "../routeMaker";
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -108,7 +109,13 @@ class AlbumListScreen extends React.PureComponent<Props, State> {
   }
 
   onPressAlbum = (album: Album) => {
-    // TODO: Navigate to photos screen
+    const [routeName, routeProps] = makePhotoListScreenRoute({
+      album: album,
+    });
+    this.props.navigation.navigate({
+      routeName,
+      params: routeProps,
+    });
   };
 
   keyExtractor = (item: Album) => {
