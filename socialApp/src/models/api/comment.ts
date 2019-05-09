@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { Comment } from "@babel/types";
+import { Comment } from "../comment";
 
 const commentSchema: yup.Schema<Comment> = yup.object<Comment>();
 

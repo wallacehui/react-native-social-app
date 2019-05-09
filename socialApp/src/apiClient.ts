@@ -10,8 +10,8 @@ import { Photo } from "./models/photo";
 import { photoListResponseSchema } from "./models/api/photo";
 import { Post } from "./models/post";
 import { postListResponseSchema } from "./models/api/post";
-import { Comment } from "@babel/types";
 import { commentListResponseSchema } from "./models/api/comment";
+import { Comment } from "./models/comment";
 
 const endpoint = "https://jsonplaceholder.typicode.com";
 const size = 20;

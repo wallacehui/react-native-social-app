@@ -7,6 +7,10 @@ import {
   WillRefreshPhotosAction,
 } from "./actions/photo";
 import { WillFetchPostsAction, DidFetchPostsAction } from "./actions/post";
+import {
+  WillFetchCommentsAction,
+  DidFetchCommentsAction,
+} from "./actions/comment";
 
 export type Action =
   | DidFetchUsersAction
@@ -18,4 +22,6 @@ export type Action =
   | DidFetchPhotosAction
   | WillRefreshPhotosAction
   | WillFetchPostsAction
-  | DidFetchPostsAction;
+  | DidFetchPostsAction
+  | WillFetchCommentsAction
+  | DidFetchCommentsAction;
