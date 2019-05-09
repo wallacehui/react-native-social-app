@@ -55,6 +55,32 @@ const styles = StyleSheet.create({
     height: 1,
     flex: 1,
   },
+  postView: {
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+  },
+  postTitle: {
+    fontSize: 22,
+    color: "#333333",
+    flex: 1,
+    fontWeight: "600",
+    paddingVertical: 10,
+  },
+  postBody: {
+    fontSize: 16,
+    color: "#333333",
+    flex: 1,
+    paddingBottom: 10,
+  },
+  commentLabel: {
+    fontSize: 18,
+    color: "#333333",
+    flex: 1,
+    fontWeight: "600",
+    paddingLeft: 15,
+    paddingTop: 5,
+    paddingBottom: 15,
+  },
 });
 
 export interface RouteProps {
@@ -98,6 +124,19 @@ function CommentViewCell(props: { comment: Comment }) {
   );
 }
 
+function PostView(props: { post: Post }) {
+  return (
+    <>
+      <View style={styles.postView}>
+        <Text style={styles.postTitle}>{props.post.title}</Text>
+        <Text style={styles.postBody}>{props.post.body}</Text>
+      </View>
+      <Text style={styles.commentLabel}>Comments</Text>
+      <View style={styles.separator} />
+    </>
+  );
+}
+
 class CommentListScreen extends React.PureComponent<Props, State> {
   static navigationOptions: NavigationScreenOptions = {
     headerTitle: <Text style={styles.title}>Comments</Text>,
@@ -130,6 +169,7 @@ class CommentListScreen extends React.PureComponent<Props, State> {
           data={comments}
           renderItem={this.renderItem}
           keyExtractor={this.keyExtractor}
+          ListHeaderComponent={<PostView post={this.state.post} />}
         />
       </View>
     );
