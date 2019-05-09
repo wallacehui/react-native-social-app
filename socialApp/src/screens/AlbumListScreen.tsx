@@ -123,8 +123,8 @@ class AlbumListScreen extends React.PureComponent<Props, State> {
   };
 
   renderItem = ({ item }: { item: Album }) => {
-    // tslint:disable-next-line:jsx-no-lambda
     return (
+      // tslint:disable-next-line:jsx-no-lambda
       <AlbumViewCell album={item} onPress={() => this.onPressAlbum(item)} />
     );
   };
