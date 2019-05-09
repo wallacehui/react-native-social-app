@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import {
   NavigationScreenProps,
   NavigationScreenOptions,
@@ -12,7 +12,6 @@ import { bindActionCreators } from "redux";
 import { fetchalbumsByUser } from "../redux/actions/album";
 import { connect } from "react-redux";
 import { Album } from "../models/album";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { makePhotoListScreenRoute } from "../routeMaker";
 
 const styles = StyleSheet.create({
