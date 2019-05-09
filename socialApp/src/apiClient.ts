@@ -8,6 +8,8 @@ import { albumListResponseSchema } from "./models/api/album";
 import { ItemsLink } from "./redux/reducers/paginator";
 import { Photo } from "./models/photo";
 import { photoListResponseSchema } from "./models/api/photo";
+import { Post } from "./models/post";
+import { postListResponseSchema } from "./models/api/post";
 
 const endpoint = "https://jsonplaceholder.typicode.com";
 const size = 20;
@@ -15,7 +17,8 @@ const size = 20;
 export type ApiClient = UserApiClient &
   TodoApiClient &
   AlbumApiClient &
-  PhotoApiClient;
+  PhotoApiClient &
+  PostApiClient;
 
 interface UserApiClient {
   queryUsers(): Promise<User[]>;
@@ -34,6 +37,10 @@ interface PhotoApiClient {
     albumId: number,
     nextLink: string | undefined
   ): Promise<ItemsLink<Photo>>;
+}
+
+interface PostApiClient {
+  queryPostsByUser(userId: number): Promise<Post[]>;
 }
 
 class ApiClientImpl implements ApiClient {
@@ -94,6 +101,19 @@ class ApiClientImpl implements ApiClient {
       const link = parseLinkHeader(headers.get("Link"));
       const photos = photoListResponseSchema.validateSync(body);
       return { items: photos, next: link.next };
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async queryPostsByUser(userId: number): Promise<Post[]> {
+    try {
+      const url = appendQueryString(endpoint + "/posts", {
+        userId: userId.toString(),
+      });
+      const response = await fetch(url);
+      const body = await response.json();
+      return postListResponseSchema.validateSync(body);
     } catch (e) {
       throw e;
     }
